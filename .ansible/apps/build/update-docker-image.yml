@@ -1,0 +1,14 @@
+- hosts: 127.0.0.1
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Build and upload docker image
+      docker_image:
+         path: ./
+         name: dreamconception/phoenix-build-elixir-ubuntu16
+         repository: dreamconception/phoenix-build-elixir-ubuntu16
+         tag: 0.0.1
+         pull: yes
+         push: yes
+         force: yes

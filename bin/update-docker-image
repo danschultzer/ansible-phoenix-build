@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+
+cd .ansible
+ansible-playbook apps/build/update-docker-image.yml -vvv
