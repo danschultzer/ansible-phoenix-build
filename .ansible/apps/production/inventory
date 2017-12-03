@@ -1,0 +1,8 @@
+---
+all:
+  hosts:
+    example.com
+  vars:
+    ansible_connection: docker
+    ansible_host: ansible_phoenix_build_build_server
+    local_build_dir: /tmp/ansible_phoenix_build

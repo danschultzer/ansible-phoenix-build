@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+
+cd .ansible
+ansible-playbook -i apps/production/inventory apps/production/deploy.yml -vvv

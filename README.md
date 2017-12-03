@@ -10,6 +10,8 @@ A set of binaries have been added to the [`bin/`](bin/) directory.
 | ------------------------- | ------------ |
 | `bin/update-docker-image` | Builds and pushes the docker container used for building the Phoenix app. |
 | `bin/build`               | Builds a release of the app. |
+| `bin/prepare-deploy-docker`              | Prepare the docker container for deploy. This is only necessary for contained test of this repo. |
+| `bin/deploy`              | Deploys a release of the app (to the docker image). |
 
 ## Vault pass
 
@@ -24,15 +26,22 @@ DWSrmiR3A3wdMsmdg/JxyOi2I4JAVp7mWkgH4clxVYlVru+nmVW9/14fv7kJnhxj
 1cHUCAcGkDvbmP7ECqau9vlbhDBLCczbUDR4yY4Cw9zhJK5oJAZHIA==
 ```
 
-## Testing build locally
+## Run build locally
 
-You can test the build locally after running `bin/build` by doing the following:
+You can run the build locally by doing the following:
 
 ```bash
 docker attach ansible_phoenix_build_build_server
 cd build/_build/prod/rel/ansible_phoenix_build
 bin/ansible_phoenix_build foreground
 ```
+
+## Notes
+
+- There's no sudo command in docker container, so the two places were sudo is used has been changed (with the sudo command preserved as comment)
+- Local deploys goes to the docker container
+- CI deploys goes to localhost
+- Service restart disabled
 
 ## LICENSE
 

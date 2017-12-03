@@ -1,0 +1,46 @@
+---
+- name: Check for existing current directory
+  stat:
+    path: "{{ current_dir }}"
+  register: current_dir_stat
+
+- name: Check for existing release directory
+  stat:
+    path: "{{ releases_dir }}/{{ build_version }}"
+  register: release_dir_stat
+
+- name: Copy previous release (make faster release deploys)
+  command: "cp -r -L {{ current_dir }}/ {{ releases_dir }}/{{ build_version }}"
+  when: current_dir_stat.stat.exists and not release_dir_stat.stat.exists
+
+- name: "Upload new {{ build_version }} release"
+  synchronize:
+    src: "{{ local_release_dir }}/"
+    dest: "{{ releases_dir }}/{{ build_version }}"
+    recursive: yes
+    # rsync_path: "sudo -u {{ username }} rsync"
+    delete: yes
+
+# Here you can link directories in case you've uploaded files, etc
+
+- name: Run migrations
+  command: bash -lc "bin/{{ app_name }} migrate" chdir="{{ releases_dir }}/{{ build_version }}"
+
+- name: Update current symlink
+  file:
+    dest: "{{ current_dir }}"
+    src: "{{ releases_dir }}/{{ build_version }}"
+    state: link
+    force: yes
+  notify:
+    - "restart app"
+
+- name: List all releases
+  shell: "ls -t {{ releases_dir }} | tail -n +{{ releases_to_keep + 1 }}"
+  register: ls_output
+
+- name: Remove old releases
+  file:
+    name: "{{ releases_dir }}/{{ item }}"
+    state: absent
+  with_items: "{{ ls_output.stdout_lines }}"

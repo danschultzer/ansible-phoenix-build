@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+cd .ansible
+
+docker exec ansible_phoenix_build_build_server mkdir -p /u/apps/ansible_phoenix_build/releases
+docker exec ansible_phoenix_build_build_server apt-get install postgresql -y
+docker exec --user postgres ansible_phoenix_build_build_server bash -c "psql -tc \"SELECT 1 FROM pg_database WHERE datname = 'ansible_phoenix_build'\" | grep -q 1 || psql -c \"CREATE DATABASE ansible_phoenix_build\""
+docker exec --user postgres ansible_phoenix_build_build_server bash -c "psql -tc \"ALTER USER postgres PASSWORD 'postgres'\""

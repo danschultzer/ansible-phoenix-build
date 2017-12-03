@@ -49,4 +49,7 @@ release :ansible_phoenix_build do
   set applications: [
     :runtime_tools
   ]
+  set commands: [
+    "migrate": "rel/commands/migrate.sh"
+  ]
 end

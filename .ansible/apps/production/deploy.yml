@@ -1,0 +1,27 @@
+---
+- hosts: all
+  user: root
+  gather_facts: no
+
+  vars:
+    local_release_dir: "{{ local_build_dir }}/_build/prod/rel/ansible_phoenix_build"
+    build_version: "{{ lookup('file', local_build_dir + '/_build/prod/rel/ansible_phoenix_build/BUILD_VERSION') }}"
+    commit_hash: "{{ lookup('file', local_build_dir + '/_build/prod/rel/ansible_phoenix_build/COMMIT_HASH') }}"
+
+  pre_tasks:
+    - name: Get git version
+      delegate_to: localhost
+      become: false
+      shell: "git rev-parse master {{ local_build_dir }}"
+      register: git_version_result
+
+    - name: Check for newest build
+      delegate_to: localhost
+      fail:
+        msg: "Latest GIT commit of {{ git_version_result.stdout_lines[0] }} does not match build version of {{ commit_hash }}. Please build a new release."
+      when: commit_hash != git_version_result.stdout_lines[0]
+
+  roles:
+    - role: deploy_app/0.0.1
+      app_name: ansible_phoenix_build
+      username: "{{ ansible_user }}"
