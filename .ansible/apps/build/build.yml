@@ -1,0 +1,33 @@
+- hosts: all
+  gather_facts: no
+  vars:
+    local_build_dir: "/tmp/ansible_phoenix_build"
+    git_repo: "git@github.com:danschultzer/ansible-phoenix-build.git"
+    production_vars_file: "../production/host_vars/example.com"
+
+  pre_tasks:
+    - command: date +%Y.%m.%d%H%M
+      delegate_to: localhost
+      register: build_version_cmd
+
+    - set_fact:
+        build_version: "{{ build_version_cmd.stdout }}"
+
+    - name: Checkout the master branch from git repo
+      delegate_to: localhost
+      git:
+        repo: "{{ git_repo }}"
+        dest: "{{ local_build_dir }}"
+        version: master
+        force: yes
+      when: ansible_connection == "docker"
+
+  roles:
+    - role: docker_setup/0.0.1
+      container_name: "{{ ansible_host }}"
+      image_name: dreamconception/phoenix-build-elixir-ubuntu16:0.0.1
+      when: ansible_connection == "docker"
+
+    - role: build_app/0.0.1
+      mix_env: prod
+      app_name: ansible_phoenix_build

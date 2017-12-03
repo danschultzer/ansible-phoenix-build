@@ -1,0 +1,56 @@
+---
+- name: Load production vars
+  include_vars: "{{ production_vars_file }}"
+
+- name: Create secrets
+  template:
+    src: prod.secret.exs.j2
+    dest: "{{ build_dir }}/config/prod.secret.exs"
+    mode: 0644
+
+- name: Fetch mix dependencies
+  command: bash -lc "mix deps.get" chdir="{{ build_dir }}"
+  environment:
+    MIX_ENV: "{{ mix_env }}"
+
+- name: Fetch npm dependencies
+  command: bash -lc "cd {{ build_dir }}/assets && npm install"
+  environment:
+    MIX_ENV: "{{ mix_env }}"
+
+- name: Build assets
+  command: bash -lc "cd {{ build_dir }}/assets && npm run deploy"
+  environment:
+    MIX_ENV: "{{ mix_env }}"
+
+- name: Digest assets
+  command: bash -lc "mix phx.digest" chdir="{{ build_dir }}"
+  environment:
+    MIX_ENV: "{{ mix_env }}"
+
+- name: Remove previous build
+  file:
+    name: "{{ build_dir }}/_build/prod/rel/{{ app_name }}"
+    state: absent
+
+- name: "Releasing {{ build_version }}"
+  command: bash -lc "mix release --env=prod --no-tar" chdir="{{ build_dir }}"
+  environment:
+    MIX_ENV: "{{ mix_env }}"
+    BUILD_VERSION: "{{ build_version }}"
+
+- name: Adding BUILD_VERSION file with "{{ build_version }}"
+  copy:
+    content: "{{ build_version }}"
+    dest: "{{ build_dir }}/_build/prod/rel/{{ app_name }}/BUILD_VERSION"
+
+- name: Get GIT version
+  command: git rev-parse HEAD
+  args:
+    chdir: "{{ build_dir }}"
+  register: git_result
+
+- name: Adding COMMIT_HASH file with "{{ git_result.stdout }}"
+  copy:
+    content: "{{ git_result.stdout }}"
+    dest: "{{ build_dir }}/_build/prod/rel/{{ app_name }}/COMMIT_HASH"

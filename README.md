@@ -9,6 +9,30 @@ A set of binaries have been added to the [`bin/`](bin/) directory.
 | Command                   | What it does |
 | ------------------------- | ------------ |
 | `bin/update-docker-image` | Builds and pushes the docker container used for building the Phoenix app. |
+| `bin/build`               | Builds a release of the app. |
+
+## Vault pass
+
+`.ansible/.vault_pass.txt` needs the following content for you to be able to run builds (this is obviously just for demo data):
+
+```
+ciloPBJybrzq51S7Sl3c0t6MjAAQhKn/FXJBRP3JM1YL9VSlTvcwP4GJa82ip83Q
+s2uJGdPt9Edt4kqQa9PCEDz8ab2uJ3CMfuLw6BWiQmbiaDRNKZFs7P6i4/5txpcz
+ppGE/IZaX4sdwM+DFyXnHfzLDRxmEmf7Jmlhcb1icqc3jbsvHQwKe0L+Sk2qyTs4
+MZHca7cTI+247BrWuGqKMsxnpSHB8zuHCGqCAkwM1rSa9VQDbvSS9hH+TEg2ciXR
+DWSrmiR3A3wdMsmdg/JxyOi2I4JAVp7mWkgH4clxVYlVru+nmVW9/14fv7kJnhxj
+1cHUCAcGkDvbmP7ECqau9vlbhDBLCczbUDR4yY4Cw9zhJK5oJAZHIA==
+```
+
+## Testing build locally
+
+You can test the build locally after running `bin/build` by doing the following:
+
+```bash
+docker attach ansible_phoenix_build_build_server
+cd build/_build/prod/rel/ansible_phoenix_build
+bin/ansible_phoenix_build foreground
+```
 
 ## LICENSE
 
