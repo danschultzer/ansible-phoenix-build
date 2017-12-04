@@ -35,3 +35,12 @@ jobs:
           paths:
             - ~/repo/_build
             - ~/repo/deps
+
+      - deploy:
+          name: "Deploy master to production"
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              mkdir -p /u/apps/ansible_phoenix_build/releases
+              MIX_ENV=prod mix ecto.create
+              cd .ansible && ansible-playbook -i apps/production/inventory-ci apps/production/deploy.yml -vvv;
+            fi
