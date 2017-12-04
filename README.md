@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/danschultzer/ansible-phoenix-build.svg?style=svg)](https://circleci.com/gh/danschultzer/ansible-phoenix-build) [Blog post](https://dreamconception.com/tech/phoenix-automated-build-and-deploy-made-simple/)
+
 # Ansible Phoenix Build
 
 This sample repo is configured for production-ready build and deploy cycle. It contains an ansible setup that will maintain docker image, build phoenix app in docker image, and do automated versioned releases on your production server.
