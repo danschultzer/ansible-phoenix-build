@@ -38,6 +38,8 @@ cd build/_build/prod/rel/ansible_phoenix_build
 bin/ansible_phoenix_build foreground
 ```
 
+Note that you'll need a database server to connect to. The fastest way if you're using postgres is to just run `sh bin/prepare-deploy-docker` to prepare the docker container with a postgres server and database.
+
 ## Notes
 
 - There's no sudo command in docker container, so the two places were sudo is used has been changed (with the sudo command preserved as comment)
