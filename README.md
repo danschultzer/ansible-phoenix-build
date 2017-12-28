@@ -40,12 +40,46 @@ bin/ansible_phoenix_build foreground
 
 Note that you'll need a database server to connect to. The fastest way if you're using postgres is to just run `sh bin/prepare-deploy-docker` to prepare the docker container with a postgres server and database.
 
+## Deploy to remote server
+
+I recommend you to follow the [blog post guide](https://dreamconception.com/tech/phoenix-automated-build-and-deploy-made-simple/) but you will be able to use this repo to deploy to a remote server.
+
+1. Search and replace `example.com` with your actual host name (both file name, and in files)
+2. Set up a `deploy` user on your remote host
+3. Create `/u/apps/ansible_phoenix_build/releases`
+4. Permit `deploy` user to run `sudo /bin/systemctl restart ansible_phoenix_build`.
+5. Add the following systemd configuration to `/etc/systemd/system/ansible_phoenix_build.service`:
+   ```ini
+   [Unit]
+   Description=Server for ansible_phoenix_build
+   Wants=postgres.service
+   After=postgres.service
+   After=syslog.target
+   After=network.target
+
+   [Service]
+   Type=simple
+   User=deploy
+   Group=deploy
+   WorkingDirectory=/u/apps/ansible_phoenix_build/current
+   ExecStart=/u/apps/ansible_phoenix_build/current/bin/ansible_phoenix_build foreground
+   KillMode=process
+   Restart=on-failure
+   SuccessExitStatus=143
+   TimeoutSec=10
+   RestartSec=5
+   SyslogIdentifier=ansible_phoenix_build
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+You'll be able to deploy to your remote server now!
+
 ## Notes
 
-- There's no sudo command in docker container, so the two places were sudo is used has been changed (with the sudo command preserved as comment)
 - Local deploys goes to the docker container
 - CI deploys goes to localhost
-- Service restart disabled
 
 ## LICENSE
 

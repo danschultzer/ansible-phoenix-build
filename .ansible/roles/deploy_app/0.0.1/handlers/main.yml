@@ -1,4 +1,4 @@
 ---
 - name: "restart app"
-  # raw: "sudo /bin/systemctl restart {{ app_name }}"
-  command: echo "No restart"
+  raw: "sudo /bin/systemctl restart {{ app_name }}"
+  when: restart_app == "true"

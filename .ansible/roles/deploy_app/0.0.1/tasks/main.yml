@@ -13,13 +13,22 @@
   command: "cp -r -L {{ current_dir }}/ {{ releases_dir }}/{{ build_version }}"
   when: current_dir_stat.stat.exists and not release_dir_stat.stat.exists
 
+- name: "Upload new {{ build_version }} release to docker"
+  synchronize:
+    src: "{{ local_release_dir }}/"
+    dest: "{{ releases_dir }}/{{ build_version }}"
+    recursive: yes
+    delete: yes
+  when: ansible_connection == "docker"
+
 - name: "Upload new {{ build_version }} release"
   synchronize:
     src: "{{ local_release_dir }}/"
     dest: "{{ releases_dir }}/{{ build_version }}"
     recursive: yes
-    # rsync_path: "sudo -u {{ username }} rsync"
+    rsync_path: "sudo -u {{ username }} rsync"
     delete: yes
+  when: ansible_connection != "docker"
 
 # Here you can link directories in case you've uploaded files, etc
 

@@ -1,9 +1,21 @@
 #!/bin/bash
 set -e
 
+HOST=example.com
+
 cd .ansible
 
-docker exec ansible_phoenix_build_build_server mkdir -p /u/apps/ansible_phoenix_build/releases
-docker exec ansible_phoenix_build_build_server apt-get install postgresql -y
-docker exec --user postgres ansible_phoenix_build_build_server bash -c "psql -tc \"SELECT 1 FROM pg_database WHERE datname = 'ansible_phoenix_build'\" | grep -q 1 || psql -c \"CREATE DATABASE ansible_phoenix_build\""
-docker exec --user postgres ansible_phoenix_build_build_server bash -c "psql -tc \"ALTER USER postgres PASSWORD 'postgres'\""
+docker run --rm -d -t -i --name $HOST dreamconception/phoenix-build-elixir-ubuntu16:0.0.1
+
+# Add deploy user
+docker exec $HOST bash -c "useradd -ms /bin/bash deploy"
+
+# Add releases directory
+docker exec $HOST bash -c "mkdir -p /u/apps/ansible_phoenix_build/releases && chown deploy -R /u/apps/ansible_phoenix_build"
+
+# Add database
+docker exec $HOST apt-get update
+docker exec $HOST apt-get install postgresql -y
+docker exec $HOST bash -c "service postgresql start"
+docker exec --user postgres $HOST bash -c "psql -tc \"SELECT 1 FROM pg_database WHERE datname = 'ansible_phoenix_build'\" | grep -q 1 || psql -c \"CREATE DATABASE ansible_phoenix_build\""
+docker exec --user postgres $HOST bash -c "psql -tc \"ALTER USER postgres PASSWORD 'postgres'\""

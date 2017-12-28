@@ -3,8 +3,6 @@ all:
   hosts:
     example.com
   vars:
-    ansible_connection: local
-    ansible_host: 127.0.0.1
-    ansible_user: root
     local_build_dir: "~/repo"
     ansible_host_key_checking: false
+    ansible_user: deploy
