@@ -46,9 +46,10 @@ I recommend you to follow the [blog post guide](https://dreamconception.com/tech
 
 1. Search and replace `example.com` with your actual host name (both file name, and in files)
 2. Set up a `deploy` user on your remote host
-3. Create `/u/apps/ansible_phoenix_build/releases`
-4. Permit `deploy` user to run `sudo /bin/systemctl restart ansible_phoenix_build`.
-5. Add the following systemd configuration to `/etc/systemd/system/ansible_phoenix_build.service`:
+3. Create the deploy directory with `mkdir -p /u/apps/ansible_phoenix_build/releases`
+4. Make the directory writeable for the deploy user with: `chown -R deploy /u/apps/ansible_phoenix_build`
+5. Permit `deploy` user to run `sudo /bin/systemctl restart ansible_phoenix_build`.
+6. Add the following systemd configuration to `/etc/systemd/system/ansible_phoenix_build.service`:
    ```ini
    [Unit]
    Description=Server for ansible_phoenix_build
@@ -75,6 +76,8 @@ I recommend you to follow the [blog post guide](https://dreamconception.com/tech
    ```
 
 You'll be able to deploy to your remote server now!
+
+To use the `bin/deploy` command, remove the `--user` and `--connection` arguments.
 
 ## Notes
 
