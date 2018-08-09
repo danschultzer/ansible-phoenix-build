@@ -30,11 +30,11 @@
 
 - name: Remove previous build
   file:
-    name: "{{ build_dir }}/_build/prod/rel/{{ app_name }}"
+    name: "{{ build_dir }}/_build/{{ mix_env }}/rel/{{ app_name }}"
     state: absent
 
 - name: "Releasing {{ build_version }}"
-  command: bash -lc "mix release --env=prod --no-tar" chdir="{{ build_dir }}"
+  command: bash -lc "mix release --env={{ mix_env }} --no-tar" chdir="{{ build_dir }}"
   environment:
     MIX_ENV: "{{ mix_env }}"
     BUILD_VERSION: "{{ build_version }}"
@@ -42,7 +42,7 @@
 - name: Adding BUILD_VERSION file with "{{ build_version }}"
   copy:
     content: "{{ build_version }}"
-    dest: "{{ build_dir }}/_build/prod/rel/{{ app_name }}/BUILD_VERSION"
+    dest: "{{ build_dir }}/_build/{{ mix_env }}/rel/{{ app_name }}/BUILD_VERSION"
 
 - name: Get GIT version
   command: git rev-parse HEAD
@@ -53,4 +53,4 @@
 - name: Adding COMMIT_HASH file with "{{ git_result.stdout }}"
   copy:
     content: "{{ git_result.stdout }}"
-    dest: "{{ build_dir }}/_build/prod/rel/{{ app_name }}/COMMIT_HASH"
+    dest: "{{ build_dir }}/_build/{{ mix_env }}/rel/{{ app_name }}/COMMIT_HASH"
