@@ -24,18 +24,18 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install asdf
-RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.4.1
+RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.5.1
 
 # Install erlang
 RUN $HOME/.asdf/bin/asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git && \
-    $HOME/.asdf/bin/asdf install erlang 20.2 && \
-    $HOME/.asdf/bin/asdf global erlang 20.2 && \
+    $HOME/.asdf/bin/asdf install erlang 21.0.4 && \
+    $HOME/.asdf/bin/asdf global erlang 21.0.4 && \
     rm -rf  /tmp/*
 
 # Install elixir
 RUN $HOME/.asdf/bin/asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git && \
-    $HOME/.asdf/bin/asdf install elixir 1.6.0 && \
-    $HOME/.asdf/bin/asdf global elixir 1.6.0 && \
+    $HOME/.asdf/bin/asdf install elixir 1.7.1 && \
+    $HOME/.asdf/bin/asdf global elixir 1.7.1 && \
     rm -rf  /tmp/*
 
 # Make erlang/elixir accessible

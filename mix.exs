@@ -42,7 +42,7 @@ defmodule AnsiblePhoenixBuild.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
 
-      {:distillery, "~> 1.5", runtime: false}
+      {:distillery, "~> 2.0.0-rc.6"}
     ]
   end
 
@@ -56,7 +56,7 @@ defmodule AnsiblePhoenixBuild.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end
