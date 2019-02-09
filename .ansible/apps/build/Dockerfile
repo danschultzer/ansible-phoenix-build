@@ -28,14 +28,14 @@ RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.5.1
 
 # Install erlang
 RUN $HOME/.asdf/bin/asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git && \
-    $HOME/.asdf/bin/asdf install erlang 21.0.4 && \
-    $HOME/.asdf/bin/asdf global erlang 21.0.4 && \
+    $HOME/.asdf/bin/asdf install erlang 21.2.5 && \
+    $HOME/.asdf/bin/asdf global erlang 21.2.5 && \
     rm -rf  /tmp/*
 
 # Install elixir
 RUN $HOME/.asdf/bin/asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git && \
-    $HOME/.asdf/bin/asdf install elixir 1.7.1 && \
-    $HOME/.asdf/bin/asdf global elixir 1.7.1 && \
+    $HOME/.asdf/bin/asdf install elixir 1.8.1 && \
+    $HOME/.asdf/bin/asdf global elixir 1.8.1 && \
     rm -rf  /tmp/*
 
 # Make erlang/elixir accessible

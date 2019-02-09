@@ -42,7 +42,7 @@ defmodule AnsiblePhoenixBuild.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
 
-      {:distillery, "~> 2.0.0-rc.6"}
+      {:distillery, "~> 2.0.0"}
     ]
   end
 

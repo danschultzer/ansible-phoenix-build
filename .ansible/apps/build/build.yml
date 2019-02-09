@@ -24,10 +24,12 @@
 
   roles:
     - role: docker_setup/0.0.1
-      container_name: "{{ ansible_host }}"
-      image_name: dreamconception/phoenix-build-elixir-ubuntu16:1.7.1
+      vars:
+        container_name: "{{ ansible_host }}"
+        image_name: dreamconception/phoenix-build-elixir-ubuntu16:1.8.1
       when: ansible_connection == "docker"
 
     - role: build_app/0.0.1
-      mix_env: prod
-      app_name: ansible_phoenix_build
+      vars:
+        mix_env: dev
+        app_name: ansible_phoenix_build

@@ -3,7 +3,7 @@
   gather_facts: no
 
   vars:
-    mix_env: prod
+    mix_env: dev
     local_release_dir: "{{ local_build_dir }}/_build/{{ mix_env }}/rel/ansible_phoenix_build"
     build_version: "{{ lookup('file', local_build_dir + '/_build/{{ mix_env }}/rel/ansible_phoenix_build/BUILD_VERSION') }}"
     commit_hash: "{{ lookup('file', local_build_dir + '/_build/{{ mix_env }}/rel/ansible_phoenix_build/COMMIT_HASH') }}"
@@ -24,5 +24,6 @@
 
   roles:
     - role: deploy_app/0.0.1
-      app_name: ansible_phoenix_build
-      username: "{{ ansible_user }}"
+      vars:
+        app_name: ansible_phoenix_build
+        username: "{{ ansible_user }}"

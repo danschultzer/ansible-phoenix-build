@@ -8,7 +8,7 @@
          path: ./
          name: dreamconception/phoenix-build-elixir-ubuntu16
          repository: dreamconception/phoenix-build-elixir-ubuntu16
-         tag: 1.7.1
+         tag: 1.8.1
          pull: yes
          push: yes
          force: yes
