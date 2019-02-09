@@ -2,7 +2,8 @@
 # They can then be used by adding `plugin MyPlugin` to
 # either an environment, or release definition, where
 # `MyPlugin` is the name of the plugin module.
-Path.join(["rel", "plugins", "*.exs"])
+~w(rel plugins *.exs)
+|> Path.join()
 |> Path.wildcard()
 |> Enum.map(&Code.eval_file(&1))
 
@@ -13,7 +14,7 @@ use Mix.Releases.Config,
     default_environment: Mix.env()
 
 # For a full list of config options for both releases
-# and environments, visit https://hexdocs.pm/distillery/configuration.html
+# and environments, visit https://hexdocs.pm/distillery/config/distillery.html
 
 
 # You may define one or more environments in this file,
@@ -30,13 +31,14 @@ environment :dev do
   # dev mode.
   set dev_mode: true
   set include_erts: false
-  set cookie: :"t%`<MlSkKrk3WP0bWl:WIIvW9Bna}rD0WiR&iTjD:eNOw2*O5p8y8>bk)?CFGYQJ"
+  set cookie: :".QrJxw?x6cFbhfl(AX%@j{l}p]g7^2=vo:I7c*lz]EZ(g&$2XIy(=Fk0:A=62?SF"
 end
 
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: :"kAgKQ%yV9;NrEw5)Q|ES_Sk!>ui2~mQl^l4DgD;3Bkt2^@%rEhcrC>V>USuB*a9c"
+  set cookie: :"9x@/wL?56w00J<_hRi]oF!66l~^Nf[69`T/pB|y%Md3O(5>Pk6hlzP(Hv%!zw0r<"
+  set vm_args: "rel/vm.args"
 end
 
 # You may define one or more releases in this file.
@@ -53,3 +55,4 @@ release :ansible_phoenix_build do
     "migrate": "rel/commands/migrate.sh"
   ]
 end
+

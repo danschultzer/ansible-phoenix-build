@@ -20,26 +20,28 @@ defmodule AnsiblePhoenixBuildWeb do
   def controller do
     quote do
       use Phoenix.Controller, namespace: AnsiblePhoenixBuildWeb
+
       import Plug.Conn
-      import AnsiblePhoenixBuildWeb.Router.Helpers
       import AnsiblePhoenixBuildWeb.Gettext
+      alias AnsiblePhoenixBuildWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/ansible_phoenix_build_web/templates",
-                        namespace: AnsiblePhoenixBuildWeb
+      use Phoenix.View,
+        root: "lib/ansible_phoenix_build_web/templates",
+        namespace: AnsiblePhoenixBuildWeb
 
       # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
+      import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
 
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import AnsiblePhoenixBuildWeb.Router.Helpers
       import AnsiblePhoenixBuildWeb.ErrorHelpers
       import AnsiblePhoenixBuildWeb.Gettext
+      alias AnsiblePhoenixBuildWeb.Router.Helpers, as: Routes
     end
   end
 

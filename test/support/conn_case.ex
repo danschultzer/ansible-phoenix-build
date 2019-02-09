@@ -5,7 +5,7 @@ defmodule AnsiblePhoenixBuildWeb.ConnCase do
 
   Such tests rely on `Phoenix.ConnTest` and also
   import other functionality to make it easier
-  to build common datastructures and query the data layer.
+  to build common data structures and query the data layer.
 
   Finally, if the test case interacts with the database,
   it cannot be async. For this reason, every test runs
@@ -19,20 +19,20 @@ defmodule AnsiblePhoenixBuildWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import AnsiblePhoenixBuildWeb.Router.Helpers
+      alias AnsiblePhoenixBuildWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
       @endpoint AnsiblePhoenixBuildWeb.Endpoint
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(AnsiblePhoenixBuild.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(AnsiblePhoenixBuild.Repo, {:shared, self()})
     end
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
-
 end
