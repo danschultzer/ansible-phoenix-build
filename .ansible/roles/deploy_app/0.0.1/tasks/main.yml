@@ -26,7 +26,6 @@
     src: "{{ local_release_dir }}/"
     dest: "{{ releases_dir }}/{{ build_version }}"
     recursive: yes
-    rsync_path: "sudo -u {{ username }} rsync"
     delete: yes
   when: ansible_connection != "docker"
 

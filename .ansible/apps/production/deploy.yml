@@ -7,7 +7,7 @@
     local_release_dir: "{{ local_build_dir }}/_build/{{ mix_env }}/rel/ansible_phoenix_build"
     build_version: "{{ lookup('file', local_build_dir + '/_build/{{ mix_env }}/rel/ansible_phoenix_build/BUILD_VERSION') }}"
     commit_hash: "{{ lookup('file', local_build_dir + '/_build/{{ mix_env }}/rel/ansible_phoenix_build/COMMIT_HASH') }}"
-    restart_app: "{{ ansible_location != 'docker' }}"
+    restart_app: "{{ ansible_connection != 'docker' }}"
 
   pre_tasks:
     - name: Get git version

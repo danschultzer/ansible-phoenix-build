@@ -3,6 +3,6 @@ all:
   hosts:
     example.com
   vars:
-    local_build_dir: "~/repo"
-    ansible_host_key_checking: false
+    local_build_dir: ~/repo
+    ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
     ansible_user: deploy
