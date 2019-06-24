@@ -1,18 +1,16 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y curl locales
 
-# set locale
+# Set locale
 RUN locale-gen en_US.UTF-8
 ENV LANG=en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-
-# Set up NODE JS download
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
-    apt-get install -y nodejs
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+ENV HOME=/root
+ENV PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
 
 # Install dependencies
 RUN apt-get update && \
@@ -24,24 +22,26 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install asdf
-RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.5.1
+RUN git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.7.2
+
+# Install node js
+RUN asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git && \
+    $HOME/.asdf/plugins/nodejs/bin/import-release-team-keyring && \
+    asdf install nodejs 11.8.0 && \
+    asdf global nodejs 11.8.0 && \
+    rm -rf  /tmp/*
 
 # Install erlang
-RUN $HOME/.asdf/bin/asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git && \
-    $HOME/.asdf/bin/asdf install erlang 21.2.5 && \
-    $HOME/.asdf/bin/asdf global erlang 21.2.5 && \
+RUN asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git && \
+    asdf install erlang 22.0.2 && \
+    asdf global erlang 22.0.2 && \
     rm -rf  /tmp/*
 
 # Install elixir
-RUN $HOME/.asdf/bin/asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git && \
-    $HOME/.asdf/bin/asdf install elixir 1.8.1 && \
-    $HOME/.asdf/bin/asdf global elixir 1.8.1 && \
+RUN asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git && \
+    asdf install elixir 1.9.0 && \
+    asdf global elixir 1.9.0 && \
     rm -rf  /tmp/*
-
-# Make erlang/elixir accessible
-RUN echo '. $HOME/.asdf/asdf.sh' >> ~/.bash_profile && \
-    echo '. $HOME/.asdf/completions/asdf.bash' >> ~/.bash_profile
-ENV PATH=/root/.asdf/bin:/root/.asdf/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Install hex and rebar
 RUN mix local.hex --force

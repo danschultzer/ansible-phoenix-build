@@ -26,7 +26,7 @@
     - role: docker_setup/0.0.1
       vars:
         container_name: "{{ ansible_host }}"
-        image_name: dreamconception/phoenix-build-elixir-ubuntu16:1.8.1
+        image_name: dreamconception/phoenix-build-elixir-ubuntu18:1.9.0
       when: ansible_connection == "docker"
 
     - role: build_app/0.0.1

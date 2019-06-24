@@ -6,9 +6,9 @@
     - name: Build and upload docker image
       docker_image:
          path: ./
-         name: dreamconception/phoenix-build-elixir-ubuntu16
-         repository: dreamconception/phoenix-build-elixir-ubuntu16
-         tag: 1.8.1
+         name: dreamconception/phoenix-build-elixir-ubuntu18
+         repository: dreamconception/phoenix-build-elixir-ubuntu18
+         tag: 1.9.0
          pull: yes
          push: yes
          force: yes

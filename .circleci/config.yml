@@ -5,8 +5,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: dreamconception/phoenix-build-elixir-ubuntu16:1.8.1
-      - image: circleci/postgres:9.6
+      - image: dreamconception/phoenix-build-elixir-ubuntu18:1.9.0
+      - image: circleci/postgres:11
 
     environment:
       MIX_ENV: test
