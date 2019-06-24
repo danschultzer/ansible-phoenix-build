@@ -6,7 +6,7 @@
     production_vars_file: "../production/host_vars/example.com"
 
   pre_tasks:
-    - command: date +%Y.%m.%d%H%M
+    - command: date +"0.1.0-%Y.%-m.%-d.%-H.%-M"
       delegate_to: localhost
       register: build_version_cmd
 
@@ -31,5 +31,5 @@
 
     - role: build_app/0.0.1
       vars:
-        mix_env: dev
+        mix_env: prod
         app_name: ansible_phoenix_build

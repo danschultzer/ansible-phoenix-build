@@ -32,7 +32,7 @@
 # Here you can link directories in case you've uploaded files, etc
 
 - name: Run migrations
-  command: bash -lc "bin/{{ app_name }} migrate" chdir="{{ releases_dir }}/{{ build_version }}"
+  command: bash -lc "bin/{{ app_name }} eval AnsiblePhoenixBuild.Release.migrate" chdir="{{ releases_dir }}/{{ build_version }}"
 
 - name: Update current symlink
   file:

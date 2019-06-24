@@ -34,7 +34,7 @@
     state: absent
 
 - name: "Releasing {{ build_version }}"
-  command: bash -lc "mix release --env={{ mix_env }} --no-tar" chdir="{{ build_dir }}"
+  command: bash -lc "mix release" chdir="{{ build_dir }}"
   environment:
     MIX_ENV: "{{ mix_env }}"
     BUILD_VERSION: "{{ build_version }}"

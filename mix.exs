@@ -4,13 +4,19 @@ defmodule AnsiblePhoenixBuild.MixProject do
   def project do
     [
       app: :ansible_phoenix_build,
-      version: "0.1.0",
-      elixir: "~> 1.5",
+      version: System.get_env("BUILD_VERSION") || "0.1.0",
+      elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      releases: [
+        ansible_phoenix_build: [
+          include_executables_for: [:unix],
+          applications: [runtime_tools: :permanent]
+        ],
+      ]
     ]
   end
 
@@ -42,9 +48,7 @@ defmodule AnsiblePhoenixBuild.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
-
-      {:distillery, "~> 2.0.0"}
+      {:plug_cowboy, "~> 2.0"}
     ]
   end
 

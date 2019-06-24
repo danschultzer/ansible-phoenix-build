@@ -8,18 +8,18 @@ This sample repo is configured for production-ready build and deploy cycle. It c
 
 A set of binaries have been added to the [`bin/`](bin/) directory.
 
-| Command                   | What it does |
-| ------------------------- | ------------ |
-| `bin/update-docker-image` | Builds and pushes the docker container used for building the Phoenix app. |
-| `bin/build`               | Builds a release of the app. |
-| `bin/prepare-deploy-docker`              | Prepare the docker container for deploy. This is only necessary for contained test of this repo. |
-| `bin/deploy`              | Deploys a release of the app (to the docker image). |
+| Command                     | What it does |
+| --------------------------- | ------------ |
+| `bin/update-docker-image`   | Builds and pushes the docker container used for building the Phoenix app. |
+| `bin/build`                 | Builds a release of the app. |
+| `bin/prepare-deploy-docker` | Prepare the docker container for deploy. This is only necessary for contained test of this repo. |
+| `bin/deploy`                | Deploys a release of the app (to the docker image). |
 
 ## Vault pass
 
 `.ansible/.vault_pass.txt` needs the following content for you to be able to run builds (this is obviously just for demo data):
 
-```
+```text
 ciloPBJybrzq51S7Sl3c0t6MjAAQhKn/FXJBRP3JM1YL9VSlTvcwP4GJa82ip83Q
 s2uJGdPt9Edt4kqQa9PCEDz8ab2uJ3CMfuLw6BWiQmbiaDRNKZFs7P6i4/5txpcz
 ppGE/IZaX4sdwM+DFyXnHfzLDRxmEmf7Jmlhcb1icqc3jbsvHQwKe0L+Sk2qyTs4
@@ -35,7 +35,7 @@ You can run the build locally by doing the following:
 ```bash
 docker attach ansible_phoenix_build_build_server
 cd build/_build/prod/rel/ansible_phoenix_build
-bin/ansible_phoenix_build foreground
+bin/ansible_phoenix_build start
 ```
 
 Note that you'll need a database server to connect to. The fastest way if you're using postgres is to just run `sh bin/prepare-deploy-docker` to prepare the docker container with a postgres server and database.
@@ -50,30 +50,31 @@ I recommend you to follow the [blog post guide](https://dreamconception.com/tech
 4. Make the directory writeable for the deploy user with: `chown -R deploy /u/apps/ansible_phoenix_build`
 5. Permit `deploy` user to run `sudo /bin/systemctl restart ansible_phoenix_build`.
 6. Add the following systemd configuration to `/etc/systemd/system/ansible_phoenix_build.service`:
-   ```ini
-   [Unit]
-   Description=Server for ansible_phoenix_build
-   Wants=postgres.service
-   After=postgres.service
-   After=syslog.target
-   After=network.target
 
-   [Service]
-   Type=simple
-   User=deploy
-   Group=deploy
-   WorkingDirectory=/u/apps/ansible_phoenix_build/current
-   ExecStart=/u/apps/ansible_phoenix_build/current/bin/ansible_phoenix_build foreground
-   KillMode=process
-   Restart=on-failure
-   SuccessExitStatus=143
-   TimeoutSec=10
-   RestartSec=5
-   SyslogIdentifier=ansible_phoenix_build
+    ```ini
+    [Unit]
+    Description=Server for ansible_phoenix_build
+    Wants=postgres.service
+    After=postgres.service
+    After=syslog.target
+    After=network.target
 
-   [Install]
-   WantedBy=multi-user.target
-   ```
+    [Service]
+    Type=simple
+    User=deploy
+    Group=deploy
+    WorkingDirectory=/u/apps/ansible_phoenix_build/current
+    ExecStart=/u/apps/ansible_phoenix_build/current/bin/ansible_phoenix_build start
+    KillMode=process
+    Restart=on-failure
+    SuccessExitStatus=143
+    TimeoutSec=10
+    RestartSec=5
+    SyslogIdentifier=ansible_phoenix_build
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
 
 You'll be able to deploy to your remote server now!
 
