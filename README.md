@@ -38,7 +38,17 @@ cd build/_build/prod/rel/ansible_phoenix_build
 bin/ansible_phoenix_build start
 ```
 
-Note that you'll need a database server to connect to. The fastest way if you're using postgres is to just run `sh bin/prepare-deploy-docker` to prepare the docker container with a postgres server and database.
+Note that you'll need a database server to connect to. The easiest way if you're using postgres is to just run `sh bin/prepare-deploy-docker` to prepare a docker container with a postgres server and database. It'll set up a new container with the name `example.com`, so you will have to run `bin/deploy` to add the build.
+
+Now you can start the server in the container with:
+
+```bash
+docker attach example.com
+cd /u/apps/ansible_phoenix_build/current
+bin/ansible_phoenix_build start
+```
+
+The `bin/prepare-deploy-docker` script ensures that the docker container is accessible on port 4000, so you should be able to visit http://localhost:4000 now.
 
 ## Deploy to remote server
 

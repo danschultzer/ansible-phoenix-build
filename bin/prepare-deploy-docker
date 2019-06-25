@@ -5,7 +5,7 @@ HOST=example.com
 
 cd .ansible
 
-docker run --rm -d -t -i --name $HOST dreamconception/phoenix-build-elixir-ubuntu18:1.9.0
+docker run --rm -d -t -i -p 4000:4000 --name $HOST dreamconception/phoenix-build-elixir-ubuntu18:1.9.0
 
 # Add deploy user
 docker exec $HOST bash -c "useradd -ms /bin/bash deploy"
