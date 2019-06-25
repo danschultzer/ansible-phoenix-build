@@ -15,7 +15,7 @@ docker exec $HOST bash -c "mkdir -p /u/apps/ansible_phoenix_build/releases && ch
 
 # Add database
 docker exec $HOST apt-get update
-docker exec $HOST bash -c "DEBIAN_FRONTEND=noninteractive apt-get install postgresql -y"
+docker exec $HOST bash -c "DEBIAN_FRONTEND=noninteractive apt-get install postgresql rsync -y"
 docker exec $HOST bash -c "service postgresql start"
 docker exec --user postgres $HOST bash -c "psql -tc \"SELECT 1 FROM pg_database WHERE datname = 'ansible_phoenix_build'\" | grep -q 1 || psql -c \"CREATE DATABASE ansible_phoenix_build\""
 docker exec --user postgres $HOST bash -c "psql -tc \"ALTER USER postgres PASSWORD 'postgres'\""
